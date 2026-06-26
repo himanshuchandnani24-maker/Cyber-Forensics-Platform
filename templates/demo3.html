@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="suite-page suite-page--network">
+<div class="row mb-3 mb-md-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb" class="d-none d-md-block">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-cyber-primary">Dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">Case 3: Network Forensics</li>
+            </ol>
+        </nav>
+        <div class="cyber-header-panel border-cyber-green">
+            <h1 class="page-title text-glow-green"><i class="fa-solid fa-network-wired me-2"></i>Network Forensics & Timeline Reconstruction</h1>
+            <p class="page-subtitle data-mono">Suite 3 &bull; Log Upload &bull; Timeline &bull; Threat Detection &bull; Investigative Reporting</p>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 1: Network Log Information -->
+<div class="row g-3 g-md-4 mb-3 mb-md-4">
+    <div class="col-12 col-lg-6 workbench-sticky">
+        <div class="card cyber-card border-cyber-green h-100">
+            <div class="card-header bg-transparent border-cyber-green py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="data-mono text-glow-green text-sm"><i class="fa-solid fa-file-import me-2"></i>Upload Network Logs</span>
+                <small class="text-muted data-mono text-xs mt-2 mt-md-0">CSV, TXT, LOG</small>
+            </div>
+            <div class="card-body p-3 p-md-4">
+                <div id="dropZone" class="network-dropzone cyber-dropzone p-4 text-center d-flex flex-column align-items-center justify-content-center">
+                    <i class="fa-solid fa-cloud-arrow-up fa-3x text-cyber-green mb-3"></i>
+                    <p class="mb-2 text-muted text-sm">Drag & drop your network log file here, or click to select.</p>
+                    <p class="text-xs text-muted mb-3">CSV, TXT, LOG supported</p>
+                    <input type="file" id="fileInput" accept=".csv,.txt,.log" class="d-none">
+                    <button id="btnSelectFile" class="btn btn-outline-secondary btn-sm data-mono mb-2">Choose File</button>
+                    <div class="d-flex flex-column flex-md-row gap-2 mt-1">
+                        <button id="btnUpload" class="btn btn-cyber btn-cyber-green btn-sm data-mono">Upload & Analyze</button>
+                        <button id="btnSampleLog" class="btn btn-outline-secondary btn-sm data-mono">Use Sample Log</button>
+                    </div>
+                    <div id="uploadFilename" class="text-muted data-mono text-sm mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 7: Dashboard Statistics -->
+    <div class="col-12 col-lg-6">
+        <div class="card cyber-card border-cyber-dark h-100">
+            <div class="card-header bg-transparent border-cyber-dark py-2 py-md-3 d-flex justify-content-between align-items-center">
+                <span class="font-monospace text-muted text-sm"><i class="fa-solid fa-chart-simple me-2"></i>Dashboard Statistics</span>
+                <div id="riskBadgeContainer"></div>
+            </div>
+            <div class="card-body p-3 p-md-4">
+                <div class="row g-2 g-md-3" id="networkStats">
+                    <div class="col-6 col-md-6 col-lg-6">
+                        <div class="card cyber-card cyber-card-hover border-cyber-blue h-100">
+                            <div class="card-body d-flex align-items-center p-2 p-md-3">
+                                <div class="card-icon-container bg-cyber-blue-glow text-cyber-blue me-2 me-md-3">
+                                    <i class="fa-solid fa-database fa-sm"></i>
+                                </div>
+                                <div style="min-width:0;" class="flex-grow-1">
+                                    <div class="stat-label mb-1">Total Events</div>
+                                    <div class="stat-card-value font-monospace text-glow-blue mb-0" id="statTotalEvents">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6">
+                        <div class="card cyber-card cyber-card-hover border-cyber-purple h-100">
+                            <div class="card-body d-flex align-items-center p-2 p-md-3">
+                                <div class="card-icon-container bg-cyber-purple-glow text-cyber-purple me-2 me-md-3">
+                                    <i class="fa-solid fa-network-wired fa-sm"></i>
+                                </div>
+                                <div style="min-width:0;" class="flex-grow-1">
+                                    <div class="stat-label mb-1">Unique IPs</div>
+                                    <div class="stat-card-value font-monospace text-glow-purple mb-0" id="statUniqueIPs">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6">
+                        <div class="card cyber-card cyber-card-hover border-cyber-green h-100">
+                            <div class="card-body d-flex align-items-center p-2 p-md-3">
+                                <div class="card-icon-container bg-cyber-green-glow text-cyber-green me-2 me-md-3">
+                                    <i class="fa-solid fa-user-shield fa-sm"></i>
+                                </div>
+                                <div style="min-width:0;" class="flex-grow-1">
+                                    <div class="stat-label mb-1">Failed Logins</div>
+                                    <div class="stat-card-value font-monospace text-glow-green mb-0" id="statFailedLogins">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-6">
+                        <div class="card cyber-card cyber-card-hover border-cyber-red h-100">
+                            <div class="card-body d-flex align-items-center p-2 p-md-3">
+                                <div class="card-icon-container bg-cyber-red-glow text-cyber-red me-2 me-md-3">
+                                    <i class="fa-solid fa-triangle-exclamation fa-sm"></i>
+                                </div>
+                                <div style="min-width:0;" class="flex-grow-1">
+                                    <div class="stat-label mb-1">Suspicious Activity</div>
+                                    <div class="stat-card-value font-monospace text-glow-red mb-0" id="statSuspicious">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 mt-md-3 font-monospace text-sm text-muted" id="statDetails">Overall risk: <span id="statRiskLevel">LOW</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 2: IP Address Analysis & SECTION 3: Authentication Events -->
+<div class="row g-3 g-md-4 mb-3 mb-md-4">
+    <div class="col-12 col-lg-6">
+        <div class="card cyber-card border-cyber-blue h-100">
+            <div class="card-header bg-transparent border-cyber-blue py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="font-monospace text-glow-blue text-sm"><i class="fa-solid fa-list-ol me-2"></i>IP Address Analysis</span>
+                <div class="btn-group btn-group-sm mt-2 mt-md-0" role="group">
+                    <button type="button" class="btn btn-outline-secondary btn-sm font-monospace text-xs d-none" id="exportPDFBtn" title="Export as PDF">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm font-monospace text-xs d-none" id="exportCSVBtn" title="Export as CSV">
+                        <i class="fa-solid fa-file-csv"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm font-monospace text-xs d-none" id="exportJSONBtn" title="Export as JSON">
+                        <i class="fa-solid fa-file-code"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body p-2 p-md-3">
+                <div class="table-responsive">
+                    <table class="table table-dark table-striped mb-0 font-monospace text-sm" id="ipTable">
+                        <thead>
+                            <tr class="text-muted text-xs text-uppercase">
+                                <th>IP Address</th>
+                                <th>Role</th>
+                                <th>Events</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ipTableBody">
+                            <tr><td colspan="3" class="text-muted">No data loaded</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+        <div class="card cyber-card border-cyber-purple h-100">
+            <div class="card-header bg-transparent border-cyber-purple py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="font-monospace text-glow-purple text-sm"><i class="fa-solid fa-user-lock me-2"></i>Authentication Events</span>
+                <small class="text-muted font-monospace text-xs mt-2 mt-md-0">Successful vs Failed</small>
+            </div>
+            <div class="card-body p-2 p-md-3">
+                <ul class="list-group list-group-dark text-sm" id="authEventsList">
+                    <li class="list-group-item bg-dark text-muted font-monospace">No authentication events</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 4: Threat Detection -->
+<div class="row g-3 g-md-4 mb-3 mb-md-4">
+    <div class="col-12">
+        <div class="card cyber-card border-cyber-red">
+            <div class="card-header bg-transparent border-cyber-red py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="font-monospace text-glow-red text-sm"><i class="fa-solid fa-biohazard me-2"></i>Threat Detection</span>
+                <small class="text-muted font-monospace text-xs mt-2 mt-md-0">Detected signatures & anomalies</small>
+            </div>
+            <div class="card-body p-2 p-md-3" id="threatDetections">
+                <div class="row g-2 g-md-3" id="threatList">
+                    <div class="col-12 text-muted font-monospace text-sm">No threats detected</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 5: Timeline Reconstruction -->
+<div class="row g-3 g-md-4 mb-3 mb-md-4">
+    <div class="col-12">
+        <div class="card cyber-card border-cyber-dark">
+            <div class="card-header bg-transparent border-cyber-dark py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="font-monospace text-muted text-sm"><i class="fa-solid fa-clock me-2"></i>Timeline Reconstruction</span>
+                <small class="text-muted font-monospace text-xs mt-2 mt-md-0">Chronological event feed</small>
+            </div>
+            <div class="card-body p-2 p-md-3">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0 font-monospace text-sm" id="timelineTable">
+                        <thead>
+                            <tr class="text-muted text-xs text-uppercase">
+                                <th>Timestamp</th>
+                                <th>Event Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timelineBody">
+                            <tr><td colspan="3" class="text-muted">No timeline events</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 6: Investigation Summary -->
+<div class="row g-3 g-md-4 mb-3 mb-md-5">
+    <div class="col-12">
+        <div class="card cyber-card border-cyber-dark">
+            <div class="card-header bg-transparent border-cyber-dark py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="font-monospace text-muted text-sm"><i class="fa-solid fa-file-signature me-2"></i>Investigation Summary</span>
+                <small class="text-muted font-monospace text-xs mt-2 mt-md-0">Forensic narrative & recommendations</small>
+            </div>
+            <div class="card-body p-3 p-md-4 font-monospace text-sm text-muted" id="investigationSummary">
+                No summary available. Upload logs to generate an investigative report.
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+<script src="{{ url_for('static', filename='js/demo3.js') }}"></script>
+{% endblock %}

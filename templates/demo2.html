@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="suite-page suite-page--image">
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-cyber-primary">Dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">Case 2: Image Forensics</li>
+            </ol>
+        </nav>
+        <div class="cyber-header-panel border-cyber-blue">
+            <h1 class="page-title text-glow-blue"><i class="fa-solid fa-file-image me-2"></i>Image Forensics &amp; Steganography Suite</h1>
+            <p class="page-subtitle data-mono">Suite 2 &bull; EXIF Extraction &bull; GPS Mapping &bull; LSB Steganography &bull; Privacy Analysis</p>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: DASHBOARD STAT CARDS (shown at top)                -->
+<!-- ============================================================ -->
+<div class="row g-3 mb-4" id="dashboardCards">
+    <div class="col-6 col-lg-3">
+        <div class="card cyber-card cyber-card-hover border-cyber-blue h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <div class="card-icon-container bg-cyber-blue-glow text-cyber-blue me-3">
+                    <i class="fa-solid fa-images fa-lg"></i>
+                </div>
+                <div>
+                    <div class="stat-label mb-1">Images Analyzed</div>
+                    <div class="stat-card-value font-monospace text-glow-blue mb-0" id="statImagesAnalyzed">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card cyber-card cyber-card-hover border-cyber-purple h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <div class="card-icon-container bg-cyber-purple-glow text-cyber-purple me-3">
+                    <i class="fa-solid fa-tags fa-lg"></i>
+                </div>
+                <div>
+                    <div class="stat-label mb-1">Metadata Found</div>
+                    <div class="stat-card-value font-monospace text-glow-purple mb-0" id="statMetadataFound">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card cyber-card cyber-card-hover border-cyber-green h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <div class="card-icon-container bg-cyber-green-glow text-cyber-green me-3">
+                    <i class="fa-solid fa-location-dot fa-lg"></i>
+                </div>
+                <div>
+                    <div class="stat-label mb-1">GPS Leaks Detected</div>
+                    <div class="stat-card-value font-monospace text-glow-green mb-0" id="statGpsLeaks">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card cyber-card cyber-card-hover border-cyber-red h-100">
+            <div class="card-body d-flex align-items-center p-3">
+                <div class="card-icon-container bg-cyber-red-glow text-cyber-red me-3">
+                    <i class="fa-solid fa-triangle-exclamation fa-lg"></i>
+                </div>
+                <div>
+                    <div class="stat-label mb-1">High Risk Images</div>
+                    <div class="stat-card-value font-monospace text-glow-red mb-0" id="statHighRisk">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- IMAGE UPLOAD PANEL + RESULTS LAYOUT                           -->
+<!-- ============================================================ -->
+<div class="row g-4">
+    <!-- Left Column: Upload / Image Select -->
+    <div class="col-lg-4 workbench-sticky">
+        <div class="card h-100 cyber-card border-cyber-blue">
+            <div class="card-header bg-transparent border-cyber-blue py-3">
+                <span class="font-monospace text-glow-blue"><i class="fa-solid fa-cloud-arrow-up me-2"></i>Image Ingestion Desk</span>
+            </div>
+            <div class="card-body p-4 d-flex flex-column">
+                <p class="text-muted text-sm">Upload a digital image file (JPEG, PNG) to scan for hidden payloads, embedded EXIF coordinates, and camera properties.</p>
+                
+                <!-- Upload Dropzone -->
+                <div class="cyber-dropzone p-4 mb-4 text-center rounded border border-dashed border-cyber-blue d-flex flex-column align-items-center justify-content-center cursor-pointer" id="imageDropzone">
+                    <i class="fa-solid fa-images fa-3x text-cyber-blue mb-3 dropzone-icon"></i>
+                    <h6 class="font-monospace mb-1">DRAG & DROP IMAGE</h6>
+                    <p class="text-xs text-muted mb-0">JPG, JPEG, PNG up to 10MB</p>
+                    <input type="file" id="imageInput" class="d-none" accept="image/jpeg, image/jpg, image/png">
+                </div>
+
+                <!-- Sample Buttons -->
+                <div class="mb-4">
+                    <span class="font-monospace text-xs text-muted text-uppercase d-block mb-2">Or Analyze A Demo Sample File:</span>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <button type="button" class="btn btn-outline-secondary w-100 font-monospace text-xs btn-sample-image" data-sample="gps_exif">
+                                <i class="fa-solid fa-location-dot text-cyber-blue me-1"></i> GPS Photo
+                            </button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-outline-secondary w-100 font-monospace text-xs btn-sample-image" data-sample="stego_hidden">
+                                <i class="fa-solid fa-mask text-cyber-purple me-1"></i> Stego Hidden
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analyze Button -->
+                <button class="btn btn-cyber btn-cyber-blue w-100 py-2 mt-auto font-monospace text-uppercase" id="btnAnalyzeImage" disabled>
+                    <i class="fa-solid fa-shield-halved me-2"></i>Extract & Analyze
+                </button>
+                
+                <!-- Error Message Area -->
+                <div class="mt-3 d-none" id="errorAlert">
+                    <div class="alert alert-danger bg-cyber-red-glow border-cyber-red text-cyber-red py-2 px-3 font-monospace text-xs mb-0">
+                        <i class="fa-solid fa-circle-xmark me-1"></i>
+                        <span id="errorMessage"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Column: Results Panel -->
+    <div class="col-lg-8">
+        <!-- Initial Placeholder (shown before analysis) -->
+        <div id="resultsPlaceholder">
+            <div class="card cyber-card border-cyber-dark" style="min-height: 500px;">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center text-center py-5">
+                    <div class="cyber-empty-state">
+                        <div class="cyber-empty-state__icon"><i class="fa-solid fa-file-image"></i></div>
+                        <h5 class="cyber-empty-state__title">Awaiting Image Input</h5>
+                        <p class="cyber-empty-state__text">Upload a JPG, JPEG, or PNG image, or load a built-in sample to begin the forensic analysis pipeline.</p>
+                        <p class="cyber-empty-state__hint"><i class="fa-solid fa-lightbulb me-1"></i> Try "GPS Photo" or "Stego Hidden" samples</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Container (hidden until analysis completes) -->
+        <div id="resultsContainer" class="d-none">
+            <!-- Export Buttons Bar -->
+            <div class="mb-3 d-flex gap-2 justify-content-end d-none" id="exportButtonsBar">
+                <button type="button" class="btn btn-sm btn-outline-secondary text-xs d-none" id="exportPDFBtn" title="Export report as PDF">
+                    <i class="fa-solid fa-file-pdf me-1"></i>Export PDF
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary text-xs d-none" id="exportCSVBtn" title="Export data as CSV">
+                    <i class="fa-solid fa-file-csv me-1"></i>Export CSV
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary text-xs d-none" id="exportJSONBtn" title="Export data as JSON">
+                    <i class="fa-solid fa-file-code me-1"></i>Export JSON
+                </button>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 1: IMAGE INFORMATION                                  -->
+            <!-- ============================================================ -->
+            <div class="card cyber-card border-cyber-blue mb-4 forensic-section" id="sectionImageInfo">
+                <div class="card-header bg-transparent border-cyber-blue py-3">
+                    <span class="font-monospace text-glow-blue"><i class="fa-solid fa-circle-info me-2"></i>Section 1 — Image Information</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3 font-monospace text-sm">
+                        <div class="col-md-6">
+                            <div class="info-field p-3 rounded">
+                                <div class="field-label mb-1">File Name</div>
+                                <div class="text-cyber-light" id="infoFileName">—</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-field p-3 rounded">
+                                <div class="field-label mb-1">File Type</div>
+                                <div class="text-cyber-light" id="infoFileType">—</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-field p-3 rounded">
+                                <div class="field-label mb-1">File Size</div>
+                                <div class="text-cyber-light" id="infoFileSize">—</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-field p-3 rounded">
+                                <div class="field-label mb-1">Resolution</div>
+                                <div class="text-cyber-light" id="infoResolution">—</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info-field p-3 rounded">
+                                <div class="field-label mb-1">Upload Time</div>
+                                <div class="text-cyber-light" id="infoUploadTime">—</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 2: METADATA ANALYSIS                                  -->
+            <!-- ============================================================ -->
+            <div class="card cyber-card border-cyber-purple mb-4 forensic-section" id="sectionMetadata">
+                <div class="card-header bg-transparent border-cyber-purple py-3">
+                    <span class="font-monospace text-glow-purple"><i class="fa-solid fa-tags me-2"></i>Section 2 — Metadata Analysis</span>
+                </div>
+                <div class="card-body p-4">
+                    <div id="metadataContent">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 3: FILE INTEGRITY (SHA-256)                           -->
+            <!-- ============================================================ -->
+            <div class="card cyber-card border-cyber-green mb-4 forensic-section" id="sectionIntegrity">
+                <div class="card-header bg-transparent border-cyber-green py-3">
+                    <span class="font-monospace text-glow-green"><i class="fa-solid fa-fingerprint me-2"></i>Section 3 — File Integrity</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="font-monospace text-xs text-muted text-uppercase mb-2">SHA-256 Hash</div>
+                    <div class="hash-display p-3 rounded d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <code class="text-cyber-green" style="word-break:break-all; font-size:0.78rem;" id="hashValue">—</code>
+                        <button class="btn btn-sm btn-outline-secondary font-monospace text-xs flex-shrink-0" id="btnCopyHash" title="Copy Hash">
+                            <i class="fa-regular fa-copy me-1"></i> Copy Hash
+                        </button>
+                    </div>
+                    <div class="mt-2 d-none font-monospace text-xs text-cyber-green" id="hashCopiedMsg">
+                        <i class="fa-solid fa-check me-1"></i> Hash copied to clipboard!
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 4: PRIVACY EXPOSURE ANALYSIS                          -->
+            <!-- ============================================================ -->
+            <div class="card cyber-card border-cyber-red mb-4 forensic-section" id="sectionPrivacy">
+                <div class="card-header bg-transparent border-cyber-red py-3">
+                    <span class="font-monospace text-glow-red"><i class="fa-solid fa-user-shield me-2"></i>Section 4 — Privacy Exposure Analysis</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <!-- Privacy Score Gauge -->
+                        <div class="col-md-5 text-center">
+                            <div class="text-muted font-monospace text-xs text-uppercase mb-3">Privacy Risk Score</div>
+                            <div class="privacy-gauge-container mx-auto">
+                                <svg viewBox="0 0 120 120" class="privacy-gauge" width="140" height="140">
+                                    <!-- Background ring -->
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+                                    <!-- Score ring (animated) -->
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="var(--color-red)" stroke-width="10"
+                                        stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round"
+                                        transform="rotate(-90 60 60)" id="privacyRing"/>
+                                    <text x="60" y="55" text-anchor="middle" fill="var(--color-light)"
+                                        font-family="JetBrains Mono, monospace" font-size="22" font-weight="700" id="privacyScoreText">0%</text>
+                                    <text x="60" y="72" text-anchor="middle" fill="var(--color-muted)"
+                                        font-family="JetBrains Mono, monospace" font-size="8">RISK SCORE</text>
+                                </svg>
+                            </div>
+                        </div>
+                        <!-- Privacy Findings -->
+                        <div class="col-md-7">
+                            <div class="text-muted font-monospace text-xs text-uppercase mb-3">Findings</div>
+                            <div id="privacyFindings" class="font-monospace text-sm">
+                                <!-- Populated by JS -->
+                            </div>
+                            <div class="mt-3 p-3 rounded" id="privacyRiskLevel" style="background: rgba(255,255,255,0.03);">
+                                <span class="text-muted text-xs font-monospace text-uppercase">Risk Level:</span>
+                                <span class="ms-2 font-monospace fw-bold" id="privacyRiskText">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 5: HIDDEN DATA ANALYSIS                               -->
+            <!-- ============================================================ -->
+            <div class="card cyber-card border-cyber-purple mb-4 forensic-section" id="sectionStego">
+                <div class="card-header bg-transparent border-cyber-purple py-3">
+                    <span class="font-monospace text-glow-purple"><i class="fa-solid fa-eye-slash me-2"></i>Section 5 — Hidden Data Analysis</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="text-muted font-monospace text-xs text-uppercase mb-3">Steganography Scan Results</div>
+                    <div id="stegoContent">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SECTION 6: INVESTIGATION SUMMARY                              -->
+            <!-- ============================================================ -->
+            <div class="card cyber-card border-cyber-blue forensic-section" id="sectionSummary">
+                <div class="card-header bg-transparent border-cyber-blue py-3">
+                    <span class="font-monospace text-glow-blue"><i class="fa-solid fa-microscope me-2"></i>Section 6 — Investigation Summary</span>
+                </div>
+                <div class="card-body p-4">
+                    <div id="summaryContent" class="font-monospace text-sm">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /resultsContainer -->
+    </div>
+</div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+<script src="{{ url_for('static', filename='js/demo2.js') }}"></script>
+{% endblock %}

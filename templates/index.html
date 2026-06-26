@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-3 mb-md-4">
+    <div class="col-12">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center cyber-header-panel mb-2">
+            <div>
+                <h1 class="page-title text-glow-primary">Cyber Forensics Investigation Platform</h1>
+                <p class="page-subtitle font-monospace">Platform v1.0.0-build.38 &bull; Active Forensic Workstation</p>
+            </div>
+            <div class="mt-3 mt-md-0 d-flex gap-2 flex-wrap align-items-center">
+                <span class="badge bg-cyber-purple-glow px-3 py-2 font-monospace"><i class="fa-solid fa-microchip me-1"></i> CPU: 24%</span>
+                <span class="badge bg-cyber-blue-glow px-3 py-2 font-monospace"><i class="fa-solid fa-memory me-1"></i> RAM: 4.8 GB</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row g-3 g-md-4 mb-3 mb-md-4">
+    <!-- Total Investigations -->
+    <div class="col-6 col-md-6 col-lg-3">
+        <div class="card h-100 cyber-card cyber-card-hover border-cyber-purple">
+            <div class="card-body d-flex align-items-center">
+                <div class="card-icon-container bg-cyber-purple-glow text-cyber-purple me-3">
+                    <i class="fa-solid fa-folder-open fa-lg"></i>
+                </div>
+                <div class="min-w-0 flex-grow-1">
+                    <div class="stat-label mb-1">Total Investigations</div>
+                    <div class="stat-card-value font-monospace text-glow-purple">{{ stats.total_investigations }}</div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 pt-0 font-monospace text-xs text-muted px-2 px-md-3 pb-2 pb-md-3">
+                <i class="fa-solid fa-arrow-trend-up text-cyber-purple me-1"></i> +8 new this week
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Threats -->
+    <div class="col-6 col-md-6 col-lg-3">
+        <div class="card h-100 cyber-card cyber-card-hover border-cyber-red">
+            <div class="card-body d-flex align-items-center">
+                <div class="card-icon-container bg-cyber-red-glow text-cyber-red me-3">
+                    <i class="fa-solid fa-radiation fa-lg fa-spin-slow"></i>
+                </div>
+                <div class="min-w-0 flex-grow-1">
+                    <div class="stat-label mb-1">Active Threats</div>
+                    <div class="stat-card-value font-monospace text-glow-red">{{ stats.active_threats }}</div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 pt-0 font-monospace text-xs text-muted px-2 px-md-3 pb-2 pb-md-3">
+                <span class="text-cyber-red"><i class="fa-solid fa-circle-exclamation me-1"></i> High priority action required</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evidence Analyzed -->
+    <div class="col-6 col-md-6 col-lg-3">
+        <div class="card h-100 cyber-card cyber-card-hover border-cyber-blue">
+            <div class="card-body d-flex align-items-center">
+                <div class="card-icon-container bg-cyber-blue-glow text-cyber-blue me-3">
+                    <i class="fa-solid fa-database fa-lg"></i>
+                </div>
+                <div class="min-w-0 flex-grow-1">
+                    <div class="stat-label mb-1">Evidence Analyzed</div>
+                    <div class="stat-card-value font-monospace text-glow-blue">{{ stats.evidence_analyzed }}</div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 pt-0 font-monospace text-xs text-muted px-2 px-md-3 pb-2 pb-md-3">
+                <i class="fa-solid fa-hard-drive text-cyber-blue me-1"></i> Primary Storage: 87% full
+            </div>
+        </div>
+    </div>
+
+    <!-- Threat Level -->
+    <div class="col-6 col-md-6 col-lg-3">
+        <div class="card h-100 cyber-card cyber-card-hover border-cyber-green">
+            <div class="card-body d-flex align-items-center">
+                <div class="card-icon-container bg-cyber-green-glow text-cyber-green me-3">
+                    <i class="fa-solid fa-gauge-high fa-lg"></i>
+                </div>
+                <div class="min-w-0 flex-grow-1">
+                    <div class="stat-label mb-1">Threat Level</div>
+                    <div class="stat-card-value font-monospace text-glow-green">{{ stats.threat_level }}</div>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-0 pt-0 font-monospace text-xs text-muted px-2 px-md-3 pb-2 pb-md-3">
+                <span class="text-cyber-green"><i class="fa-solid fa-circle-check me-1"></i> Firewalls operational</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation Cards -->
+<div class="row mb-3 mb-md-5">
+    <div class="col-12">
+        <h2 class="section-heading text-glow-primary"><i class="fa-solid fa-briefcase me-2"></i>Forensic Investigation Suites</h2>
+    </div>
+    
+    <!-- Email Forensics (Demo Case 1) -->
+    <div class="col-12 col-md-6 col-lg-4 mb-3 mb-md-4 mb-lg-0">
+        <div class="card h-100 cyber-card cyber-nav-card border-cyber-purple">
+            <div class="card-header bg-transparent border-cyber-purple py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="font-monospace text-cyber-purple text-uppercase text-xs">Demo Case 01</span>
+                <span class="badge bg-cyber-purple-glow text-cyber-purple mt-2 mt-md-0">Active</span>
+            </div>
+            <div class="card-body d-flex flex-column justify-content-between p-3 p-md-4">
+                <div>
+                    <h5 class="card-title text-glow-purple mb-3">Email Forensics</h5>
+                    <p class="card-text text-muted text-sm">Parse raw email headers, extract transport hops, verify authentication seals (SPF, DKIM, DMARC), and trace phishing or malicious campaign origins.</p>
+                </div>
+                <div class="mt-3 mt-md-4">
+                    <a href="{{ url_for('demo1') }}" class="btn btn-cyber btn-cyber-purple w-100" id="btn-goto-demo1">
+                        Open Suite <i class="fa-solid fa-chevron-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Forensics (Demo Case 2) -->
+    <div class="col-12 col-md-6 col-lg-4 mb-3 mb-md-4 mb-lg-0">
+        <div class="card h-100 cyber-card cyber-nav-card border-cyber-blue">
+            <div class="card-header bg-transparent border-cyber-blue py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="font-monospace text-cyber-blue text-uppercase text-xs">Demo Case 02</span>
+                <span class="badge bg-cyber-blue-glow text-cyber-blue mt-2 mt-md-0">Active</span>
+            </div>
+            <div class="card-body d-flex flex-column justify-content-between p-3 p-md-4">
+                <div>
+                    <h5 class="card-title text-glow-blue mb-3">Image Forensics</h5>
+                    <p class="card-text text-muted text-sm">Extract EXIF, GPS, and device metadata from digital image files. Analyze color distribution and inspect Least Significant Bits (LSB) for hidden messages.</p>
+                </div>
+                <div class="mt-3 mt-md-4">
+                    <a href="{{ url_for('demo2') }}" class="btn btn-cyber btn-cyber-blue w-100" id="btn-goto-demo2">
+                        Open Suite <i class="fa-solid fa-chevron-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Network Forensics (Demo Case 3) -->
+    <div class="col-12 col-md-6 col-lg-4 col-lg-offset-0">
+        <div class="card h-100 cyber-card cyber-nav-card border-cyber-green">
+            <div class="card-header bg-transparent border-cyber-green py-2 py-md-3 d-flex justify-content-between align-items-center flex-wrap">
+                <span class="font-monospace text-cyber-green text-uppercase text-xs">Demo Case 03</span>
+                <span class="badge bg-cyber-green-glow text-cyber-green mt-2 mt-md-0">Active</span>
+            </div>
+            <div class="card-body d-flex flex-column justify-content-between p-3 p-md-4">
+                <div>
+                    <h5 class="card-title text-glow-green mb-3">Network Forensics</h5>
+                    <p class="card-text text-muted text-sm">Trace raw connection logs and network transactions. Parse protocol headers, filter suspicious activity flags, and visualize chronological security incident timelines.</p>
+                </div>
+                <div class="mt-3 mt-md-4">
+                    <a href="{{ url_for('demo3') }}" class="btn btn-cyber btn-cyber-green w-100" id="btn-goto-demo3">
+                        Open Suite <i class="fa-solid fa-chevron-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity Log (Premium Dashboard Feel) -->
+<div class="row">
+    <div class="col-12">
+        <div class="card cyber-card border-cyber-dark">
+            <div class="card-header bg-transparent border-cyber-dark py-3 d-flex justify-content-between align-items-center">
+                <span class="font-monospace text-glow-primary"><i class="fa-solid fa-terminal me-2"></i>Recent Forensic Activity Log</span>
+                <span class="badge bg-dark border border-secondary text-muted font-monospace">Live Stream</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover mb-0 cyber-table align-middle">
+                        <thead>
+                            <tr class="font-monospace text-muted text-uppercase text-xs">
+                                <th scope="col" class="ps-4">Case ID</th>
+                                <th scope="col">Investigation Name</th>
+                                <th scope="col">Suite</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="pe-4">Date Added</th>
+                            </tr>
+                        </thead>
+                        <tbody class="font-monospace">
+                            {% for case in recent_cases %}
+                            <tr>
+                                <td class="ps-4 text-cyber-primary">{{ case.id }}</td>
+                                <td>{{ case.case_name }}</td>
+                                <td>
+                                    {% if case.type == 'Email' %}
+                                        <span class="text-cyber-purple"><i class="fa-solid fa-envelope-open-text me-1"></i> Email</span>
+                                    {% elif case.type == 'Image' %}
+                                        <span class="text-cyber-blue"><i class="fa-solid fa-file-image me-1"></i> Image</span>
+                                    {% elif case.type == 'Network' %}
+                                        <span class="text-cyber-green"><i class="fa-solid fa-network-wired me-1"></i> Network</span>
+                                    {% else %}
+                                        <span class="text-muted"><i class="fa-solid fa-circle-question me-1"></i> {{ case.type }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if case.status == 'Closed' %}
+                                        <span class="status-badge status-badge--closed"><i class="fa-solid fa-circle-check"></i> Closed</span>
+                                    {% elif case.status == 'Investigating' %}
+                                        <span class="status-badge status-badge--investigating"><i class="fa-solid fa-spinner fa-spin"></i> Investigating</span>
+                                    {% else %}
+                                        <span class="status-badge status-badge--pending"><i class="fa-solid fa-hourglass-half"></i> {{ case.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="pe-4 text-muted">{{ case.date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb font-monospace mb-2">
+                <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-cyber-primary">Dashboard</a></li>
+                <li class="breadcrumb-item active text-muted" aria-current="page">About Platform</li>
+            </ol>
+        </nav>
+        <div class="cyber-header-panel border-cyber-green">
+            <h1 class="page-title text-glow-green"><i class="fa-solid fa-circle-info me-2"></i>About Cyber Forensics Platform</h1>
+            <p class="page-subtitle">Platform Overview &bull; Features &bull; Developer Information</p>
+        </div>
+    </div>
+</div>
+
+<!-- Page section navigation -->
+<nav class="about-anchor-nav sticky-top" aria-label="Page sections" style="top: var(--navbar-height);">
+    <a href="#section-overview">Overview</a>
+    <a href="#section-how-to-use">How to Use</a>
+    <a href="#section-tech">Tech Stack</a>
+    <a href="#section-developer">Developer</a>
+    <a href="#section-links">Quick Links</a>
+</nav>
+
+<!-- SECTION 1: Platform Overview -->
+<div id="section-overview" class="about-section row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card cyber-card border-cyber-green h-100">
+            <div class="card-header bg-transparent border-cyber-green py-3">
+                <span class="font-monospace text-glow-green"><i class="fa-solid fa-shield me-2"></i>Platform Overview</span>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted mb-3 font-monospace">
+                    The <strong>Cyber Forensics Investigation Platform</strong> is a comprehensive digital forensics tool designed for cybersecurity professionals, incident response teams, and security analysts.
+                </p>
+                <p class="text-muted mb-3 font-monospace">
+                    This platform provides integrated modules for analyzing digital evidence, including email headers, image metadata, network logs, and threat detection capabilities.
+                </p>
+                <h5 class="text-cyber-green font-monospace mb-3">
+                    <i class="fa-solid fa-star me-2"></i>Purpose
+                </h5>
+                <p class="text-muted font-monospace">
+                    Streamline the digital forensics investigation process by providing a unified interface for evidence analysis, threat detection, and incident reporting.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card cyber-card border-cyber-blue h-100">
+            <div class="card-header bg-transparent border-cyber-blue py-3">
+                <span class="font-monospace text-glow-blue"><i class="fa-solid fa-rocket me-2"></i>Key Features</span>
+            </div>
+            <div class="card-body p-4">
+                <ul class="list-group list-group-flush bg-transparent">
+                    <li class="list-group-item bg-transparent border-cyber-dark ps-0 pe-0 mb-2">
+                        <i class="fa-solid fa-envelope text-cyber-primary me-2"></i>
+                        <span class="text-muted font-monospace">Email Header Analysis & Phishing Detection</span>
+                    </li>
+                    <li class="list-group-item bg-transparent border-cyber-dark ps-0 pe-0 mb-2">
+                        <i class="fa-solid fa-image text-cyber-purple me-2"></i>
+                        <span class="text-muted font-monospace">Image Forensics & Steganography Detection</span>
+                    </li>
+                    <li class="list-group-item bg-transparent border-cyber-dark ps-0 pe-0 mb-2">
+                        <i class="fa-solid fa-network-wired text-cyber-green me-2"></i>
+                        <span class="text-muted font-monospace">Network Log Analysis & Threat Detection</span>
+                    </li>
+                    <li class="list-group-item bg-transparent border-cyber-dark ps-0 pe-0 mb-2">
+                        <i class="fa-solid fa-chart-line text-cyber-red me-2"></i>
+                        <span class="text-muted font-monospace">Risk Assessment & Threat Scoring</span>
+                    </li>
+                    <li class="list-group-item bg-transparent border-cyber-dark ps-0 pe-0">
+                        <i class="fa-solid fa-file-lines text-cyber-blue me-2"></i>
+                        <span class="text-muted font-monospace">Automated Report Generation</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 2: How to Use -->
+<div id="section-how-to-use" class="about-section row g-4 mb-4">
+    <div class="col-12">
+        <div class="card cyber-card border-cyber-purple h-100">
+            <div class="card-header bg-transparent border-cyber-purple py-3">
+                <span class="font-monospace text-glow-purple"><i class="fa-solid fa-graduation-cap me-2"></i>How to Use the Platform</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-4">
+                    <!-- Step 1 -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="step-card border border-cyber-blue">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="step-number bg-cyber-blue-glow text-cyber-blue font-monospace me-3">1</div>
+                                <h6 class="text-cyber-blue font-monospace mb-0">Select Module</h6>
+                            </div>
+                            <p class="text-muted font-monospace small mb-0">
+                                Choose the appropriate forensics module based on your evidence type: Email, Image, or Network.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="step-card border border-cyber-green">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="step-number bg-cyber-green-glow text-cyber-green font-monospace me-3">2</div>
+                                <h6 class="text-cyber-green font-monospace mb-0">Upload Evidence</h6>
+                            </div>
+                            <p class="text-muted font-monospace small mb-0">
+                                Upload your digital evidence (email headers, images, or network logs) using the drag-and-drop interface.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="step-card border border-cyber-purple">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="step-number bg-cyber-purple-glow text-cyber-purple font-monospace me-3">3</div>
+                                <h6 class="text-cyber-purple font-monospace mb-0">Run Analysis</h6>
+                            </div>
+                            <p class="text-muted font-monospace small mb-0">
+                                Click "Analyze" to run the forensic analysis engine and detect threats, anomalies, and suspicious activities.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="step-card border border-cyber-red">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="step-number bg-cyber-red-glow text-cyber-red font-monospace me-3">4</div>
+                                <h6 class="text-cyber-red font-monospace mb-0">Review Results</h6>
+                            </div>
+                            <p class="text-muted font-monospace small mb-0">
+                                Review comprehensive analysis results, risk assessments, timelines, and export findings as professional reports.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-cyber-dark my-4">
+
+                <h5 class="text-cyber-primary font-monospace mb-3"><i class="fa-solid fa-circle me-2"></i>Module Descriptions</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-3 bg-dark-input rounded border border-cyber-purple">
+                            <h6 class="text-cyber-purple data-mono mb-2"><i class="fa-solid fa-envelope me-2"></i>Email Forensics</h6>
+                            <p class="text-muted font-monospace small mb-0">
+                                Analyze email headers to detect spoofing, phishing attempts, and email authentication bypasses. View full email routing and identify suspicious senders.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-dark-input rounded border border-cyber-blue">
+                            <h6 class="text-cyber-blue data-mono mb-2"><i class="fa-solid fa-image me-2"></i>Image Forensics</h6>
+                            <p class="text-muted font-monospace small mb-0">
+                                Extract and analyze image metadata (EXIF data), detect steganographic content, and identify image manipulation or alterations.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-dark-input rounded border border-cyber-green">
+                            <h6 class="text-cyber-green font-monospace mb-2"><i class="fa-solid fa-network-wired me-2"></i>Network Forensics</h6>
+                            <p class="text-muted font-monospace small mb-0">
+                                Analyze network logs to detect brute force attacks, suspicious ports, unusual connections, and calculate overall security risk levels.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 3: Technical Information -->
+<div id="section-tech" class="about-section row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card cyber-card border-cyber-blue h-100">
+            <div class="card-header bg-transparent border-cyber-blue py-3">
+                <span class="font-monospace text-glow-blue"><i class="fa-solid fa-code me-2"></i>Technology Stack</span>
+            </div>
+            <div class="card-body p-4">
+                <h6 class="text-cyber-primary font-monospace mb-3">Backend</h6>
+                <ul class="text-muted font-monospace small mb-4">
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #3b82f6;"></i>Python 3.x</li>
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #3b82f6;"></i>Flask Web Framework</li>
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #3b82f6;"></i>CSV/Log Processing</li>
+                </ul>
+
+                <h6 class="text-cyber-green font-monospace mb-3">Frontend</h6>
+                <ul class="text-muted font-monospace small mb-4">
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #10b981;"></i>HTML5 & CSS3</li>
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #10b981;"></i>Bootstrap 5</li>
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #10b981;"></i>JavaScript (Vanilla)</li>
+                </ul>
+
+                <h6 class="text-cyber-purple font-monospace mb-3">Design</h6>
+                <ul class="text-muted font-monospace small">
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #8b5cf6;"></i>Font Awesome Icons</li>
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #8b5cf6;"></i>Cyberpunk Dark Theme</li>
+                    <li><i class="fa-solid fa-circle-dot me-2" style="color: #8b5cf6;"></i>Neon Color Accents</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card cyber-card border-cyber-green h-100">
+            <div class="card-header bg-transparent border-cyber-green py-3">
+                <span class="font-monospace text-glow-green"><i class="fa-solid fa-chart-simple me-2"></i>Platform Statistics</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3 text-center">
+                    <div class="col-6">
+                        <div class="p-3 bg-dark rounded">
+                            <h4 class="text-cyber-primary font-monospace mb-1">3</h4>
+                            <p class="text-muted font-monospace small mb-0">Forensics Modules</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-dark rounded">
+                            <h4 class="text-cyber-green font-monospace mb-1">8+</h4>
+                            <p class="text-muted font-monospace small mb-0">Analysis Features</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-dark rounded">
+                            <h4 class="text-cyber-purple font-monospace mb-1">WCAG AA</h4>
+                            <p class="text-muted font-monospace small mb-0">Accessibility Level</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-dark rounded">
+                            <h4 class="text-cyber-red font-monospace mb-1">Real-time</h4>
+                            <p class="text-muted font-monospace small mb-0">Threat Detection</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 4: About Developer -->
+<div id="section-developer" class="about-section row g-4 mb-4">
+    <div class="col-12">
+        <div class="card cyber-card border-cyber-red h-100">
+            <div class="card-header bg-transparent border-cyber-red py-3">
+                <span class="font-monospace text-glow-red"><i class="fa-solid fa-user me-2"></i>About the Developer</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-4 align-items-center">
+                    <!-- Developer Avatar -->
+                    <div class="col-md-4 text-center">
+                        <div class="mb-4">
+                            <div class="d-inline-block p-4 bg-cyber-purple-glow rounded-circle dev-avatar mb-3">
+                                <i class="fa-solid fa-user-secret fa-4x text-cyber-purple"></i>
+                            </div>
+                        </div>
+                        <h5 class="text-cyber-primary font-monospace mb-1">Himanshu Chandnani</h5>
+                        <p class="text-muted font-monospace small">Cybersecurity Enthusiast & Developer</p>
+                    </div>
+
+                    <!-- Developer Info -->
+                    <div class="col-md-8">
+                        <div class="mb-4">
+                            <h6 class="text-cyber-green font-monospace mb-3"><i class="fa-solid fa-graduation-cap me-2"></i>Education</h6>
+                            <div class="p-3 bg-dark-input rounded border border-cyber-green mb-3">
+                                <p class="text-muted font-monospace small mb-1"><strong>Institution:</strong> Government Polytechnic Gandhinagar</p>
+                                <p class="text-muted font-monospace small mb-1"><strong>Program:</strong> Diploma in Information Technology (IT)</p>
+                                <p class="text-muted font-monospace small mb-0"><strong>Batch:</strong> 2024 - 2027 (Semester 5)</p>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6 class="text-cyber-blue font-monospace mb-3"><i class="fa-solid fa-envelope me-2"></i>Contact</h6>
+                            <div class="p-3 bg-dark-input rounded border border-cyber-blue mb-3">
+                                <p class="text-muted font-monospace small mb-1">
+                                    <i class="fa-solid fa-envelope me-2"></i>
+                                    <a href="mailto:himanshuchandnani24@gmail.com" class="text-cyber-primary text-decoration-none">himanshuchandnani24@gmail.com</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h6 class="text-cyber-purple font-monospace mb-3"><i class="fa-solid fa-lightbulb me-2"></i>Project Details</h6>
+                            <p class="text-muted font-monospace small">
+                                The Cyber Forensics Investigation Platform was developed as a comprehensive diploma project to demonstrate proficiency in full-stack web development, cybersecurity analysis, and digital forensics techniques.
+                            </p>
+                            <p class="text-muted font-monospace small mb-0">
+                                This platform showcases integration of multiple forensic modules, real-time threat detection, and professional reporting capabilities.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-cyber-dark my-4">
+
+                <!-- Skills -->
+                <div>
+                    <h6 class="text-cyber-green font-monospace mb-3"><i class="fa-solid fa-star me-2"></i>Skills & Technologies</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-cyber-blue-glow text-cyber-blue font-monospace small">Python</span>
+                        <span class="badge bg-cyber-blue-glow text-cyber-blue font-monospace small">Flask</span>
+                        <span class="badge bg-cyber-purple-glow text-cyber-purple font-monospace small">JavaScript</span>
+                        <span class="badge bg-cyber-purple-glow text-cyber-purple font-monospace small">HTML5/CSS3</span>
+                        <span class="badge bg-cyber-green-glow text-cyber-green font-monospace small">Bootstrap 5</span>
+                        <span class="badge bg-cyber-green-glow text-cyber-green font-monospace small">Digital Forensics</span>
+                        <span class="badge bg-cyber-red-glow text-cyber-red font-monospace small">Cybersecurity</span>
+                        <span class="badge bg-cyber-red-glow text-cyber-red font-monospace small">Web Development</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 5: Quick Links -->
+<div id="section-links" class="about-section row g-4">
+    <div class="col-md-6 col-lg-4">
+        <a href="{{ url_for('home') }}" class="text-decoration-none">
+            <div class="card cyber-card cyber-card-hover border-cyber-blue h-100 quick-link-card">
+                <div class="card-body text-center p-4">
+                    <i class="fa-solid fa-gauge fa-2x text-cyber-blue mb-3"></i>
+                    <h6 class="text-cyber-blue font-monospace mb-1">Dashboard</h6>
+                    <p class="text-muted font-monospace small mb-0">Start analyzing forensic evidence</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <a href="{{ url_for('demo1') }}" class="text-decoration-none">
+            <div class="card cyber-card cyber-card-hover border-cyber-purple h-100 quick-link-card">
+                <div class="card-body text-center p-4">
+                    <i class="fa-solid fa-envelope fa-2x text-cyber-purple mb-3"></i>
+                    <h6 class="text-cyber-purple data-mono mb-1">Email Forensics</h6>
+                    <p class="text-muted font-monospace small mb-0">Analyze email headers & phishing</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <a href="{{ url_for('demo2') }}" class="text-decoration-none">
+            <div class="card cyber-card cyber-card-hover border-cyber-blue h-100 quick-link-card">
+                <div class="card-body text-center p-4">
+                    <i class="fa-solid fa-image fa-2x text-cyber-blue mb-3"></i>
+                    <h6 class="text-cyber-blue data-mono mb-1">Image Forensics</h6>
+                    <p class="text-muted font-monospace small mb-0">Extract EXIF & detect steganography</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <a href="{{ url_for('demo3') }}" class="text-decoration-none">
+            <div class="card cyber-card cyber-card-hover border-cyber-green h-100 quick-link-card">
+                <div class="card-body text-center p-4">
+                    <i class="fa-solid fa-network-wired fa-2x text-cyber-green mb-3"></i>
+                    <h6 class="text-cyber-green data-mono mb-1">Network Forensics</h6>
+                    <p class="text-muted font-monospace small mb-0">Analyze logs & detect threats</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <a href="{{ url_for('about') }}#section-how-to-use" class="text-decoration-none">
+            <div class="card cyber-card cyber-card-hover border-cyber-primary h-100 quick-link-card">
+                <div class="card-body text-center p-4">
+                    <i class="fa-solid fa-file-pdf fa-2x text-cyber-primary mb-3"></i>
+                    <h6 class="text-cyber-primary data-mono mb-1">Documentation</h6>
+                    <p class="text-muted font-monospace small mb-0">View platform guides & tutorials</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <a href="mailto:himanshuchandnani24@gmail.com" class="text-decoration-none">
+            <div class="card cyber-card cyber-card-hover border-cyber-green h-100 quick-link-card">
+                <div class="card-body text-center p-4">
+                    <i class="fa-solid fa-envelope fa-2x text-cyber-green mb-3"></i>
+                    <h6 class="text-cyber-green font-monospace mb-1">Contact</h6>
+                    <p class="text-muted font-monospace small mb-0">Send feedback or questions</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,12 +1,10 @@
-# CyberFoerensics
-
 # 🛡️ Cyber Forensics Investigation Platform
 
 A web-based application that demonstrates digital forensic investigation workflows by integrating **Email Forensics**, **Image Forensics**, and **Network Forensics** into a single platform.
 
 ## 🚀 Live Demo
 
-**Live Website:** https://YOUR-RENDER-URL.onrender.com
+**Live Website:** https://cyber-forensics-platform.onrender.com
 
 ---
 
@@ -136,17 +134,6 @@ No additional files are required to explore the application.
 * User Authentication
 * Database Integration
 
----
-
-## 📷 Screenshots
-
-> Add screenshots of:
-
-* Dashboard
-* Email Forensics
-* Image Forensics
-* Network Forensics
-* Investigation Summary
 
 ---
 

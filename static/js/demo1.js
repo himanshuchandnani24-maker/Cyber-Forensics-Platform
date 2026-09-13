@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <!-- Meta Details -->
                     <h6 class="text-glow-blue mb-2 text-uppercase text-xs fw-bold"><i class="fa-solid fa-barcode me-1"></i>Envelope Data</h6>
                     <div class="table-responsive mb-3 border border-secondary rounded">
-                        <table class="table table-dark table-striped mb-0 text-xs cyber-table">
+                        <table class="table table-striped mb-0 text-xs cyber-table">
                             <tbody>
                                 <tr><td class="text-muted">From</td><td>${escapeHtml(data.metadata.from)}</td></tr>
                                 <tr><td class="text-muted">To</td><td>${escapeHtml(data.metadata.to)}</td></tr>

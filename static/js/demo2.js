@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h6 class="text-glow-purple mb-3 font-monospace text-xs text-uppercase">
                         <i class="fa-solid fa-tags me-1"></i> EXIF Properties
                     </h6>
-                    <table class="table table-dark table-striped text-xs cyber-table mb-0 font-monospace">
+                    <table class="table table-striped text-xs cyber-table mb-0 font-monospace">
                         <tbody>
                             <tr><td class="text-muted" style="width:40%;">Camera Model</td><td>${meta.camera_model}</td></tr>
                             <tr><td class="text-muted">Device Manufacturer</td><td>${meta.device_manufacturer}</td></tr>

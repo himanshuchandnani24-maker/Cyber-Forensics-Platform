@@ -1,15 +1,15 @@
 // File: static/js/charts.js
 // Reusable chart functions for Network Forensics visualization
 
-// Cyberpunk theme colors
+// Enterprise Theme Colors
 const CYBER_COLORS = {
-  cyan: '#06b6d4',
-  purple: '#8b5cf6',
-  blue: '#3b82f6',
+  cyan: '#0284c7',
+  purple: '#4f46e5',
+  blue: '#2563eb',
   green: '#10b981',
   red: '#ef4444',
-  dark: '#1e293b',
-  darkBg: '#0f172a',
+  dark: '#0f172a',
+  darkBg: '#ffffff',
   muted: '#64748b'
 };
 

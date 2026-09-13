@@ -9,8 +9,8 @@
                 <p class="page-subtitle font-monospace">Platform v1.0.0-build.38 &bull; Active Forensic Workstation</p>
             </div>
             <div class="mt-3 mt-md-0 d-flex gap-2 flex-wrap align-items-center">
-                <span class="badge bg-cyber-purple-glow px-3 py-2 font-monospace"><i class="fa-solid fa-microchip me-1"></i> CPU: 24%</span>
-                <span class="badge bg-cyber-blue-glow px-3 py-2 font-monospace"><i class="fa-solid fa-memory me-1"></i> RAM: 4.8 GB</span>
+                <span class="badge bg-cyber-green-glow px-3 py-2"><i class="fa-solid fa-circle-check me-1"></i> Engine: Active</span>
+                <span class="badge bg-cyber-blue-glow px-3 py-2"><i class="fa-solid fa-shield me-1"></i> Security: Normal</span>
             </div>
         </div>
     </div>
@@ -107,11 +107,11 @@
             <div class="card-body d-flex flex-column justify-content-between p-3 p-md-4">
                 <div>
                     <h5 class="card-title text-glow-purple mb-3">Email Forensics</h5>
-                    <p class="card-text text-muted text-sm">Parse raw email headers, extract transport hops, verify authentication seals (SPF, DKIM, DMARC), and trace phishing or malicious campaign origins.</p>
+                    <p class="card-text text-muted text-sm">Check email headers to verify if an email sender is real or fake, trace where the email traveled from, and detect phishing scams.</p>
                 </div>
                 <div class="mt-3 mt-md-4">
                     <a href="{{ url_for('demo1') }}" class="btn btn-cyber btn-cyber-purple w-100" id="btn-goto-demo1">
-                        Open Suite <i class="fa-solid fa-chevron-right ms-1"></i>
+                        Open Tool <i class="fa-solid fa-chevron-right ms-1"></i>
                     </a>
                 </div>
             </div>
@@ -128,11 +128,11 @@
             <div class="card-body d-flex flex-column justify-content-between p-3 p-md-4">
                 <div>
                     <h5 class="card-title text-glow-blue mb-3">Image Forensics</h5>
-                    <p class="card-text text-muted text-sm">Extract EXIF, GPS, and device metadata from digital image files. Analyze color distribution and inspect Least Significant Bits (LSB) for hidden messages.</p>
+                    <p class="card-text text-muted text-sm">Analyze photo details (EXIF) to discover the phone/camera model, GPS map location, date taken, and scan for hidden secret text inside pixels.</p>
                 </div>
                 <div class="mt-3 mt-md-4">
                     <a href="{{ url_for('demo2') }}" class="btn btn-cyber btn-cyber-blue w-100" id="btn-goto-demo2">
-                        Open Suite <i class="fa-solid fa-chevron-right ms-1"></i>
+                        Open Tool <i class="fa-solid fa-chevron-right ms-1"></i>
                     </a>
                 </div>
             </div>
@@ -149,11 +149,11 @@
             <div class="card-body d-flex flex-column justify-content-between p-3 p-md-4">
                 <div>
                     <h5 class="card-title text-glow-green mb-3">Network Forensics</h5>
-                    <p class="card-text text-muted text-sm">Trace raw connection logs and network transactions. Parse protocol headers, filter suspicious activity flags, and visualize chronological security incident timelines.</p>
+                    <p class="card-text text-muted text-sm">Upload network traffic logs to detect hacker attempts, password guessing (brute force attacks), port scanning, and view an event timeline.</p>
                 </div>
                 <div class="mt-3 mt-md-4">
                     <a href="{{ url_for('demo3') }}" class="btn btn-cyber btn-cyber-green w-100" id="btn-goto-demo3">
-                        Open Suite <i class="fa-solid fa-chevron-right ms-1"></i>
+                        Open Tool <i class="fa-solid fa-chevron-right ms-1"></i>
                     </a>
                 </div>
             </div>
@@ -171,7 +171,7 @@
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-dark table-hover mb-0 cyber-table align-middle">
+                    <table class="table table-hover mb-0 cyber-table align-middle">
                         <thead>
                             <tr class="font-monospace text-muted text-uppercase text-xs">
                                 <th scope="col" class="ps-4">Case ID</th>

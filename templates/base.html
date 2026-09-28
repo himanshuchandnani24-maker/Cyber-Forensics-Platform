@@ -29,7 +29,7 @@
     <!-- Main Navigation / Header -->
     <nav class="navbar navbar-expand-lg navbar-dark cyber-navbar sticky-top" id="mainNavbar">
         <div class="container-fluid px-3 px-lg-4" style="max-width: var(--content-max-width);">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}" id="nav-brand">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.home') }}" id="nav-brand">
                 <i class="fa-solid fa-shield-halved text-cyber-primary me-2 brand-icon"></i>
                 <span class="brand-text">CYBER<span class="text-cyber-accent">FORENSICS</span></span>
             </a>
@@ -39,27 +39,27 @@
             <div class="collapse navbar-collapse" id="cyberNavbar">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('home') }}" id="nav-home">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('main.home') }}" id="nav-home">
                             <i class="fa-solid fa-gauge me-1"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/demo1' %}active{% endif %}" href="{{ url_for('demo1') }}" id="nav-demo1">
+                        <a class="nav-link {% if request.path == '/demo1' %}active{% endif %}" href="{{ url_for('main.demo1') }}" id="nav-demo1">
                             <i class="fa-solid fa-envelope-open-text me-1"></i> Email Forensics
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/demo2' %}active{% endif %}" href="{{ url_for('demo2') }}" id="nav-demo2">
+                        <a class="nav-link {% if request.path == '/demo2' %}active{% endif %}" href="{{ url_for('main.demo2') }}" id="nav-demo2">
                             <i class="fa-solid fa-file-image me-1"></i> Image Forensics
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/demo3' %}active{% endif %}" href="{{ url_for('demo3') }}" id="nav-demo3">
+                        <a class="nav-link {% if request.path == '/demo3' %}active{% endif %}" href="{{ url_for('main.demo3') }}" id="nav-demo3">
                             <i class="fa-solid fa-network-wired me-1"></i> Network Forensics
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('about') }}" id="nav-about">
+                        <a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('main.about') }}" id="nav-about">
                             <i class="fa-solid fa-circle-info me-1"></i> About
                         </a>
                     </li>

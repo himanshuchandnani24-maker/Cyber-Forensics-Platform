@@ -1,16 +1,19 @@
 // File: static/js/demo3.js
-// Network Forensics frontend: upload, fetch, render results
+// Network Forensics frontend: upload, preview, then analyze
 
 (function(){
   let selectedFile = null;
+  let loadedLogContent = null;  // Stores loaded log text before analysis
 
   function setLoading(on){
+    const btnAnalyze = document.getElementById('btnAnalyzeNetwork');
     const btnUpload = document.getElementById('btnUpload');
     const btnSample = document.getElementById('btnSampleLog');
     const btnSelectFile = document.getElementById('btnSelectFile');
     const dropZone = document.getElementById('dropZone');
     
     if(on){
+      if(btnAnalyze) btnAnalyze.disabled = true;
       if(btnUpload) btnUpload.disabled = true;
       if(btnSample) btnSample.disabled = true;
       if(btnSelectFile) btnSelectFile.disabled = true;
@@ -20,11 +23,17 @@
       if(btnSample) btnSample.disabled = false;
       if(btnSelectFile) btnSelectFile.disabled = false;
       if(dropZone) dropZone.classList.remove('opacity-75');
+      // Only enable analyze if we have loaded content
+      if(btnAnalyze) btnAnalyze.disabled = !loadedLogContent;
     }
   }
 
   function showError(msg){
-    CyberToast.error(msg || 'Unknown error', { title: 'Analysis Error' });
+    if(typeof CyberToast !== 'undefined') {
+      CyberToast.error(msg || 'Unknown error', { title: 'Analysis Error' });
+    } else {
+      alert(msg || 'Unknown error');
+    }
   }
 
   function attachListeners(){
@@ -33,13 +42,13 @@
     const btnSelectFile = document.getElementById('btnSelectFile');
     const btnUpload = document.getElementById('btnUpload');
     const btnSample = document.getElementById('btnSampleLog');
+    const btnAnalyze = document.getElementById('btnAnalyzeNetwork');
 
-    if(!dropZone || !btnUpload || !btnSample) return;
+    if(!dropZone) return;
 
     // Drag & Drop - click on dropZone (but not buttons)
     if(dropZone){
       dropZone.addEventListener('click', (e)=>{
-        // Don't trigger file picker if clicking on buttons
         if(e.target.closest('button')) return;
         fileInput?.click();
       });
@@ -54,7 +63,7 @@
         e.preventDefault();
         dropZone.classList.remove('border-cyber-green', 'drag-over');
         const f = e.dataTransfer.files[0];
-        if(f) setFile(f);
+        if(f) loadFile(f);
       });
     }
 
@@ -64,53 +73,127 @@
     });
     fileInput?.addEventListener('change', (e)=>{
       const f = e.target.files[0];
-      if(f) setFile(f);
+      if(f) loadFile(f);
     });
 
+    // "Upload & Load" button — reads the file and shows preview
     btnUpload?.addEventListener('click', (e)=>{
       e.stopPropagation();
-      handleUpload();
+      if(selectedFile) {
+        loadFile(selectedFile);
+      } else {
+        showError('Please select a file first.');
+      }
     });
+
+    // "Use Sample Log" button — loads sample data into preview
     btnSample?.addEventListener('click', (e)=>{
       e.stopPropagation();
-      handleSample();
+      handleLoadSample();
+    });
+
+    // "Analyze" button — sends loaded data for analysis
+    btnAnalyze?.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      handleAnalyze();
     });
   }
 
-  function setFile(f){
+  /** Read a file from disk and show its contents in the preview area */
+  function loadFile(f){
     selectedFile = f;
     const uploadFilename = document.getElementById('uploadFilename');
     if(uploadFilename) uploadFilename.textContent = `${f.name} · ${Math.round(f.size/1024)} KB`;
-    CyberUI.flashElement(document.getElementById('dropZone'));
+
+    const reader = new FileReader();
+    reader.onload = function(evt){
+      loadedLogContent = evt.target.result;
+      showLogPreview(loadedLogContent, f.name);
+      // Enable the analyze button
+      const btnAnalyze = document.getElementById('btnAnalyzeNetwork');
+      if(btnAnalyze) btnAnalyze.disabled = false;
+      if(typeof CyberUI !== 'undefined') CyberUI.flashElement(document.getElementById('dropZone'));
+      if(typeof CyberToast !== 'undefined') CyberToast.success(`File "${f.name}" loaded. Click "Analyze Logs" to start the analysis.`, { title: 'File Loaded' });
+    };
+    reader.onerror = function(){
+      showError('Failed to read the file.');
+    };
+    reader.readAsText(f);
   }
 
-  async function handleUpload(){
-    if(!selectedFile){ showError('Please select a file or use the sample log.'); return; }
+  /** Load the sample log text into preview (without analyzing) */
+  async function handleLoadSample(){
     setLoading(true);
     try{
-      const fd = new FormData();
-      fd.append('logfile', selectedFile);
-      const res = await fetch('/api/analyze/network', { method: 'POST', body: fd });
+      // Fetch sample log content from the server
+      const res = await fetch('/api/network/sample', { method: 'GET' });
+      if(!res.ok){
+        // Fallback: use built-in sample
+        loadedLogContent = getBuiltInSampleLog();
+      } else {
+        const data = await res.json();
+        loadedLogContent = data.log_content || getBuiltInSampleLog();
+      }
+    } catch(err){
+      // Fallback if endpoint doesn't exist
+      loadedLogContent = getBuiltInSampleLog();
+    }
+    
+    showLogPreview(loadedLogContent, 'sample_network_log.log');
+    
+    const uploadFilename = document.getElementById('uploadFilename');
+    if(uploadFilename) uploadFilename.textContent = 'Sample log (demo) loaded';
+    
+    const btnAnalyze = document.getElementById('btnAnalyzeNetwork');
+    if(btnAnalyze) btnAnalyze.disabled = false;
+    
+    if(typeof CyberUI !== 'undefined') CyberUI.flashElement(document.getElementById('dropZone'));
+    if(typeof CyberToast !== 'undefined') CyberToast.success('Sample network log loaded. Click "Analyze Logs" to start the analysis.', { title: 'Sample Loaded' });
+    
+    setLoading(false);
+  }
+
+  /** Show raw log text in the preview panel */
+  function showLogPreview(text, filename){
+    const previewPanel = document.getElementById('logPreviewPanel');
+    const previewContent = document.getElementById('logPreviewContent');
+    const previewFilename = document.getElementById('previewFilename');
+    const previewLineCount = document.getElementById('previewLineCount');
+
+    if(!previewPanel || !previewContent) return;
+
+    const lines = text.trim().split('\n');
+    
+    if(previewFilename) previewFilename.textContent = filename || 'Uploaded File';
+    if(previewLineCount) previewLineCount.textContent = `${lines.length} lines`;
+
+    // Show the preview (truncate at 200 lines for display)
+    const displayLines = lines.slice(0, 200);
+    previewContent.textContent = displayLines.join('\n');
+    if(lines.length > 200){
+      previewContent.textContent += `\n\n... (${lines.length - 200} more lines)`;
+    }
+
+    previewPanel.classList.remove('d-none');
+  }
+
+  /** Send the loaded log content to the backend for analysis */
+  async function handleAnalyze(){
+    if(!loadedLogContent){
+      showError('No log data loaded. Please upload a file or use the sample log first.');
+      return;
+    }
+    setLoading(true);
+    try{
+      const res = await fetch('/api/analyze/network', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ logtext: loadedLogContent })
+      });
       const data = await res.json();
       if(!res.ok) throw new Error(data.error || 'Analysis failed');
       renderAnalysisResponse(data);
-    }catch(err){
-      console.error(err);
-      showError(err.message);
-    }finally{ setLoading(false); }
-  }
-
-  async function handleSample(){
-    setLoading(true);
-    try{
-      const res = await fetch('/api/analyze/network', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({sample:'demo'}) });
-      const data = await res.json();
-      if(!res.ok) throw new Error(data.error || 'Analysis failed');
-      renderAnalysisResponse(data);
-      const uploadFilename = document.getElementById('uploadFilename');
-      if(uploadFilename) uploadFilename.textContent = 'Sample log (demo) loaded';
-      CyberUI.flashElement(document.getElementById('dropZone'));
-      CyberToast.success('Sample network log loaded and analyzed.', { title: 'Sample Loaded' });
+      if(typeof CyberToast !== 'undefined') CyberToast.success('Network log analysis complete!', { title: 'Analysis Done' });
     }catch(err){
       console.error(err);
       showError(err.message);
@@ -123,11 +206,17 @@
     const risk = payload.risk_assessment || {level:'LOW', score:0, reasons:['None']};
     const summary = payload.summary || [];
 
-    // Store data for export
-    setCurrentAnalysisData(analysis);
+    // Store data for export (safe call)
+    try {
+      if(typeof setCurrentAnalysisData === 'function') setCurrentAnalysisData(analysis);
+    } catch(e) { console.warn('setCurrentAnalysisData not available:', e); }
     
-    // Show export buttons with animation
-    CyberUI.revealExportButtons('#exportPDFBtn, #exportCSVBtn, #exportJSONBtn');
+    // Show export buttons with animation (safe call)
+    try {
+      if(typeof CyberUI !== 'undefined' && CyberUI.revealExportButtons) {
+        CyberUI.revealExportButtons('#exportPDFBtn, #exportCSVBtn, #exportJSONBtn');
+      }
+    } catch(e) { console.warn('revealExportButtons error:', e); }
 
     // Update dashboard stats
     const statTotal = document.getElementById('statTotalEvents');
@@ -149,7 +238,7 @@
     renderAuthEvents(analysis);
     renderThreats(analysis);
     renderTimeline(analysis.timeline || []);
-    renderSummary(summary);
+    renderSummary(summary, risk);
   }
 
   function renderRiskBadge(risk){
@@ -269,35 +358,109 @@
     });
   }
 
-  function renderSummary(lines){
+  function renderSummary(lines, risk){
     const container = document.getElementById('investigationSummary');
     if(!container) return;
-    if(!lines || !lines.length){ container.textContent = 'No summary available. Upload logs to generate an investigative report.'; return; }
+    
+    // If no summary lines, show default message
+    if(!lines || !lines.length){
+      container.innerHTML = '<div class="text-muted">No summary available. Upload logs to generate an investigative report.</div>';
+      return;
+    }
+
     container.innerHTML = '';
+    
     lines.forEach((line)=>{
+      // Skip empty lines but add spacing
+      if(!line || !line.trim()){
+        const spacer = document.createElement('div');
+        spacer.style.height = '8px';
+        container.appendChild(spacer);
+        return;
+      }
+
       const div = document.createElement('div');
       div.className = 'mb-2 font-monospace text-sm';
-      if(line.includes('CRITICAL') || line.includes('Brute force')){
+      
+      // Title line
+      if(line === 'Network Traffic Investigation Summary'){
+        div.className = 'mb-3 font-monospace fw-bold';
+        div.innerHTML = `<i class="fa-solid fa-file-signature me-2 text-cyber-blue"></i><span class="text-glow-blue">${line}</span>`;
+      }
+      // Critical / Warning / Brute force lines
+      else if(line.includes('WARNING') || line.includes('URGENT') || line.includes('Brute force') || line.includes('brute force') || line.includes('Password Guessing')){
         div.classList.add('text-danger');
         div.innerHTML = `<i class="fa-solid fa-triangle-exclamation me-1"></i>${line}`;
-      } else if(line.includes('MEDIUM') || line.includes('Suspicious')){
+      }
+      // Medium risk or suspicious
+      else if(line.includes('MEDIUM') || line.includes('Suspicious') || line.includes('suspicious') || line.includes('Probed') || line.includes('probed')){
         div.classList.add('text-warning');
         div.innerHTML = `<i class="fa-solid fa-exclamation-circle me-1"></i>${line}`;
-      } else if(line.includes('Recommendation') || line.includes('Action')){
+      }
+      // Risk assessment line
+      else if(line.includes('Overall Risk Assessment')){
+        const riskLevel = (risk && risk.level) || 'LOW';
+        const colorClass = riskLevel === 'HIGH' ? 'text-danger' : riskLevel === 'MEDIUM' ? 'text-warning' : 'text-cyber-green';
+        div.className = `mb-2 font-monospace text-sm fw-bold ${colorClass}`;
+        div.innerHTML = `<i class="fa-solid fa-gauge-high me-1"></i>${line}`;
+      }
+      // Recommendation / Action lines
+      else if(line.includes('Recommend') || line.includes('Action') || line.includes('Next Steps')){
         div.classList.add('text-cyber-green');
-        div.innerHTML = `<i class="fa-solid fa-arrow-right me-1"></i>${line}`;
-      } else {
-        div.classList.add('text-light');
+        div.innerHTML = `<i class="fa-solid fa-arrow-right me-1"></i><strong>${line}</strong>`;
+      }
+      // Numbered recommendation steps (e.g., "  1. Block...")
+      else if(line.match(/^\s+\d+\.\s/)){
+        div.classList.add('text-cyber-green');
+        div.innerHTML = `&nbsp;&nbsp;${line.trim()}`;
+      }
+      // Sub-items with bullet (e.g., "  • Failed...")
+      else if(line.includes('•')){
+        div.classList.add('text-muted');
+        div.innerHTML = `&nbsp;&nbsp;${line.trim()}`;
+      }
+      // Section headers (e.g., "Login Activity Summary:")
+      else if(line.endsWith(':')){
+        div.className = 'mb-2 mt-2 font-monospace text-sm fw-bold text-cyber-blue';
+        div.innerHTML = `<i class="fa-solid fa-caret-right me-1"></i>${line}`;
+      }
+      // Default
+      else {
+        div.classList.add('text-muted');
         div.textContent = line;
       }
+      
       container.appendChild(div);
     });
+  }
+
+  /** Built-in sample log as fallback */
+  function getBuiltInSampleLog(){
+    return `[2026-06-25 10:01:15] [USER_LOGIN] 192.168.1.100 -> 192.168.1.50:22 [SUCCESS] SSH login successful
+[2026-06-25 10:02:30] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:03:15] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:04:02] [PORT_SCAN] 203.45.67.89 -> 192.168.1.50:135 [DETECTED] Windows RPC port probed
+[2026-06-25 10:04:45] [PORT_SCAN] 203.45.67.89 -> 192.168.1.50:139 [DETECTED] NetBIOS port probed
+[2026-06-25 10:05:12] [PORT_SCAN] 203.45.67.89 -> 192.168.1.50:445 [DETECTED] SMB port probed
+[2026-06-25 10:05:30] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:06:01] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:06:45] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:07:20] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:08:05] [PORT_SCAN] 203.45.67.89 -> 192.168.1.50:3389 [DETECTED] RDP port probed
+[2026-06-25 10:08:30] [USER_LOGIN] 192.168.1.100 -> 192.168.1.200:3306 [SUCCESS] Database connection
+[2026-06-25 10:09:15] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:09:45] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:10:20] [FILE_ACCESS] 192.168.1.100 -> 192.168.1.201:445 [SUCCESS] Shared folder accessed
+[2026-06-25 10:11:05] [FAILED_LOGIN] 203.45.67.89 -> 192.168.1.50:22 [FAILURE] Invalid credentials
+[2026-06-25 10:12:30] [NETWORK_TRAFFIC] 10.0.0.50 -> 192.168.1.50:53 [NORMAL] DNS query
+[2026-06-25 10:13:15] [USER_LOGOUT] 192.168.1.100 -> 192.168.1.50:22 [SUCCESS] SSH session closed
+[2026-06-25 10:14:00] [FIREWALL_BLOCK] 203.45.67.89 -> 192.168.1.50:22 [BLOCKED] IP blocked after 10 failed attempts`;
   }
 
   document.addEventListener('DOMContentLoaded', ()=>{
     attachListeners();
     // Initialize report export buttons
-    initializeReportButtons('Network Forensics');
+    if(typeof initializeReportButtons === 'function') initializeReportButtons('Network Forensics');
   });
 
 })();
